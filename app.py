@@ -62,11 +62,17 @@ def generate_images(generator, digit, n=5):
 # Streamlit UI
 st.title("Handwritten Digit Generator")
 
-digit = st.slider("Select digit to generate", 0, 9, 0)
+digit_input = st.text_input("Enter a digit (0-9) to generate", "0")
 
-if st.button("Generate 5 images"):
-    images = generate_images(G, digit, n=5)
-    st.write(f"Generated 5 images of digit {digit}:")
-    cols = st.columns(5)
-    for col, img in zip(cols, images):
-        col.image(img, width=100)
+# Validate input
+if digit_input.isdigit() and 0 <= int(digit_input) <= 9:
+    digit = int(digit_input)
+    if st.button("Generate 5 images"):
+        images = generate_images(G, digit, n=5)
+        st.write(f"Generated 5 images of digit {digit}:")
+        cols = st.columns(5)
+        for col, img in zip(cols, images):
+            col.image(img, width=100)
+else:
+    st.warning("Please enter a valid digit between 0 and 9.")
+
